@@ -24,13 +24,60 @@ router.post('/add', (req,res) => {
     });
     employee.save()
     .then(data =>{
-        res.json(data)
-        //res.redirect('/emp/all_employees');
-    //next();
+        //res.json(data)
+        res.redirect('/emp/all_employees');
+    next();
 
     })
     .catch(err =>{
         res.json({message:err});
     })
+})
+// retrieve all employee data
+router.get('/all_employees', (req,res) =>{
+    EmpModel.find((err,docs) => {
+        //console.log(docs);
+        if(!err){
+            res.render('employee_list', {data:docs});
+        }
+        else{
+            res.send("Error");
+        }
+    })
+});
+// retrieve one employee data
+router.get('/:name',(req,res) => {
+    let nm = req.params.name;
+    EmpModel.find({name:nm}).exec(function(err, docs){
+        if(!err){
+            res.render('employee_list',{data:docs})
+        }else{
+            res.send('error');
+        }
+    })
+})
+// delete employee data
+//router.get('/delete/:name',(req,res) => {
+    //let nm = req.params.name;
+    //EmpModel.find({"name":nm}).exec(function(err, docs){
+        //console.log(docs)
+        //if(!err){
+          //  const deletedName = EmpModel.remove({"name":nm})
+            //res.json(deletedName)
+        //}else{
+          //  res.send('error');
+        //}
+    //})
+//})
+router.get('/delete/:name',(req,res) => {
+    let nm = req.params.name;
+    console.log(req.params.name)
+    EmpModel.remove({name:nm}, function(err){
+        if(err){
+            res.send('error')
+        } else{
+            res.send('Successfully! Employee has been deleted')
+        }
+    })  
 })
 module.exports = router;

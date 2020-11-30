@@ -12,7 +12,12 @@ app.use(bp.urlencoded({
 }));
 app.engine('hbs', handlebars({
     extname:".hbs",
-    defaultLayout:"main"
+    defaultLayout:"main",
+    runtimeOptions: {
+        allowProtoPropertiesByDefault:true,
+        allowProtoMethodsByDefault:true
+    },
+    
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'))

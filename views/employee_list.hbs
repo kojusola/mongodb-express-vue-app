@@ -1,15 +1,18 @@
 <div>
     <table>
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Employee name</th>
+            <th>Employee email</th>
+            <th>Employee address</th>
+            <th>Employee phone</th>
         </tr>
         {{#each data}}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.phone}}</td>
         </tr>
+        {{/each}}
     </table>
 </div>
