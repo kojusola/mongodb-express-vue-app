@@ -17,8 +17,8 @@ const mongoose = require('mongoose');
      },
      phone:
      {
-         type: Number,
+         type: String,
      }
  });
- const Employee = mongoose.model('demo_collection', EmpSchema);
+ const Employee = mongoose.model('demo_collections', EmpSchema);
  module.exports = Employee;

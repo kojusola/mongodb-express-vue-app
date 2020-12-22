@@ -1,61 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const EmpModel = require('../model/employee.js');
+const { removeAllListeners } = require('../model/employee.js');
+const emp_controller = require('../Contollers/employee.controllers')
 
 router.get('/', function(req, res){
     res.send('This is the employee page');
 });
 
 router.get('/about', function(req, res){
-    res.send('This is the employee  about page');
+    res.send('This is the employee about page');
 });
 router.get('/add', function(req, res){
     res.render('add_employee');
 });
 // Starting data in Database from AddEmployees form
 //saving data in the database
-router.post('/add', (req,res) => {
-    //console.log(req.body);
-    const employee = new EmpModel({
-        name: req.body.name,
-        email: req.body.email,
-        address: req.body.address,
-        phone: req.body.phone
-    });
-    employee.save()
-    .then(data =>{
-        //res.json(data)
-        res.redirect('/emp/all_employees');
-    next();
-
-    })
-    .catch(err =>{
-        res.json({message:err});
-    })
-})
+router.post('/add', emp_controller.create);
 // retrieve all employee data
-router.get('/all_employees', (req,res) =>{
-    EmpModel.find((err,docs) => {
-        //console.log(docs);
-        if(!err){
-            res.render('employee_list', {data:docs});
-        }
-        else{
-            res.send("Error");
-        }
-    })
-});
+router.get('/all_employees', emp_controller.view_all);
 // retrieve one employee data
-router.get('/:name',(req,res) => {
-    let nm = req.params.name;
-    EmpModel.find({name:nm}).exec(function(err, docs){
-        if(!err){
-            res.render('employee_list',{data:docs})
-        }else{
-            res.send('error');
-        }
-    })
-})
+router.get('/:name',emp_controller.get_single_emp)
 // delete employee data
 //router.get('/delete/:name',(req,res) => {
     //let nm = req.params.name;
@@ -69,15 +34,5 @@ router.get('/:name',(req,res) => {
         //}
     //})
 //})
-router.get('/delete/:name',(req,res) => {
-    let nm = req.params.name;
-    console.log(req.params.name)
-    EmpModel.remove({name:nm}, function(err){
-        if(err){
-            res.send('error')
-        } else{
-            res.send('Successfully! Employee has been deleted')
-        }
-    })  
-})
+router.get('/delete/:name',emp_controller.delete_emp)
 module.exports = router;

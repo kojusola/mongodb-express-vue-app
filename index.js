@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const handlebars = require('express-handlebars')
 const connection = require('./connection')
 const bp = require('body-parser')
@@ -10,6 +11,8 @@ const Emproute = require('./Routes/employee.js')
 app.use(bp.urlencoded({
     extended: true
 }));
+app.use(cors());
+app.options('*',cors());
 app.engine('hbs', handlebars({
     extname:".hbs",
     defaultLayout:"main",
@@ -17,7 +20,7 @@ app.engine('hbs', handlebars({
         allowProtoPropertiesByDefault:true,
         allowProtoMethodsByDefault:true
     },
-    
+
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'))
